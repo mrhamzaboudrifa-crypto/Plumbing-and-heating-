@@ -28,3 +28,7 @@ Upload ALL files into repo root:
 - sw.js
 - icon.svg
 Then repo Settings -> Pages -> main / root.
+
+
+STYLE UPDATE:
+Stripe-inspired neutrals with accent blue only on primary buttons. WhatsApp green text-only.
