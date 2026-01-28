@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0B0F" />
+  <meta name="description" content="Peterborough plumbing. Tap a service bubble, answer quick questions, then see the right pricing page." />
+  <link rel="manifest" href="manifest.json" />
+  <title>Plumbing • Peterborough</title>
+  <style>
+    :root{
+      --ink:#0A0B0F; --ink2:#131626; --text:#0B0E14;
+      --muted:#5B6475; --bg1:#F6F7FB; --bg2:#EEF0F7;
+      --card:#FFFFFF; --line:rgba(10,11,15,.10);
+      --shadow:0 18px 48px rgba(10,11,15,.10);
+      --shadow2:0 8px 22px rgba(10,11,15,.08);
+      --r2:30px; --pad:16px; --max:1120px;
+      --a1:#2F6BFF; --a2:#23D5AB; --a3:#FFB020;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:var(--font); color:var(--text);
+      background:
+        radial-gradient(900px 520px at 10% 0%, rgba(47,107,255,.12), transparent 55%),
+        radial-gradient(900px 520px at 90% 10%, rgba(35,213,171,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a{color:inherit; text-decoration:none}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(246,247,251,.78);
+      border-bottom:1px solid var(--line);
+      padding: calc(env(safe-area-inset-top) + 10px) var(--pad) 10px;
+    }
+    .topbar-inner{max-width:var(--max); margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+    .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+    .logo{
+      width:40px; height:40px; border-radius:16px;
+      background: linear-gradient(135deg, rgba(47,107,255,1), rgba(35,213,171,1));
+      box-shadow: 0 10px 24px rgba(10,11,15,.12);
+      position:relative; flex:0 0 auto;
+    }
+    .logo:after{content:""; position:absolute; inset:9px; border-radius:14px; border:2px solid rgba(255,255,255,.35);}
+    .t1{margin:0; font-size:14px; font-weight:950; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--ink);}
+    .t2{margin:2px 0 0; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.70);
+      box-shadow: var(--shadow2);
+      font-weight:850; font-size:13px; color:var(--ink2);
+      white-space:nowrap;
+    }
+    .pill.secondary{background: rgba(255,255,255,.55); color:var(--muted); font-weight:800; box-shadow:none;}
+    .wrap{max-width:var(--max); margin:0 auto; padding:14px var(--pad) 112px;}
+    .hero{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      border-radius: var(--r2);
+      box-shadow: var(--shadow);
+      overflow:hidden; position:relative;
+    }
+    .hero:before{
+      content:""; position:absolute; inset:-2px;
+      background: radial-gradient(600px 320px at 20% 0%, rgba(47,107,255,.18), transparent 60%),
+                  radial-gradient(600px 320px at 85% 0%, rgba(35,213,171,.18), transparent 60%);
+      opacity:.55; pointer-events:none;
+    }
+    .hero-inner{position:relative; padding:18px; display:flex; flex-direction:column; gap:10px;}
+    .hero-title{margin:0; font-size: clamp(22px, 4.4vw, 36px); line-height:1.05; letter-spacing:-.6px; color:var(--ink);}
+    .hero-sub{margin:0; color:var(--muted); font-size:15px; max-width:62ch;}
+    .hero-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:2px;}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:12px 14px; border-radius:16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      color: var(--ink2);
+      font-weight:950; font-size:14px;
+      box-shadow: var(--shadow2);
+      transition: transform .08s ease, background .15s ease;
+      cursor:pointer; user-select:none;
+    }
+    .btn:active{transform: scale(.98)}
+    .btn.primary{border-color: rgba(47,107,255,.22); background: linear-gradient(135deg, rgba(47,107,255,1), rgba(47,107,255,.82)); color:#fff; box-shadow:0 18px 40px rgba(47,107,255,.22);}
+    .btn.mint{border-color: rgba(35,213,171,.22); background: linear-gradient(135deg, rgba(35,213,171,1), rgba(35,213,171,.82)); color:#071312; box-shadow:0 18px 40px rgba(35,213,171,.18);}
+    .btn.ghost{background: rgba(255,255,255,.40); box-shadow:none; color:var(--muted);}
+    .section{margin-top:14px; border:1px solid var(--line); background: rgba(255,255,255,.72); border-radius: var(--r2); box-shadow: var(--shadow2); padding:14px;}
+    .section-h{display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-bottom:12px;}
+    .section-h h2{margin:0; font-size:16px; letter-spacing:.2px; color:var(--ink2);}
+    .section-h p{margin:0; color:var(--muted); font-size:12.5px;}
+    .mini{color:var(--muted); font-size:12px; line-height:1.5;}
+    .divider{height:1px; background: var(--line); margin:12px 0;}
+
+    .bubble-grid{display:grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap:12px;}
+    .bubble-card{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.82);
+      border-radius:26px;
+      padding:14px;
+      cursor:pointer;
+      min-height:150px;
+      display:flex; flex-direction:column; justify-content:space-between;
+      transition: transform .12s ease, box-shadow .18s ease;
+    }
+    .bubble-card:hover{transform: translateY(-1px); box-shadow: var(--shadow);}
+    .bubble-card:active{transform: scale(.99)}
+    .row{display:flex; align-items:center; gap:12px;}
+    .circle{
+      width:74px; height:74px; border-radius:999px;
+      border:1px solid rgba(10,11,15,.10);
+      background:
+        radial-gradient(90px 90px at 30% 25%, rgba(47,107,255,.14), transparent 60%),
+        radial-gradient(90px 90px at 75% 30%, rgba(35,213,171,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.78));
+      display:grid; place-items:center;
+      box-shadow: 0 10px 22px rgba(10,11,15,.08);
+      flex:0 0 auto;
+    }
+    .circle svg{width:34px; height:34px; color: var(--ink2);}
+    .bubble-card h3{margin:0; font-size:14px; line-height:1.2; color: var(--ink2); font-weight:950;}
+    .bubble-card .desc{margin:6px 0 0; color: var(--muted); font-size:12.5px; line-height:1.35;}
+    .chip{
+      align-self:flex-start;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(246,247,251,.75);
+      color: var(--muted);
+      font-size:12px; font-weight:900;
+    }
+    .chip b{color: var(--ink2);}
+    .dot{width:8px; height:8px; border-radius:50%; background: var(--a2);}
+
+    .view{display:none}
+    .view.active{display:block}
+    .crumbs{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px;}
+    .crumb{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--line); background: rgba(255,255,255,.65); color: var(--muted); font-size:12px; font-weight:900;}
+    .crumb strong{color: var(--ink2);}
+    .back{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      color: var(--ink2);
+      font-weight:950; font-size:13px;
+      cursor:pointer; box-shadow: var(--shadow2);
+    }
+    .back:active{transform: scale(.98)}
+    .panel{border:1px solid var(--line); border-radius:26px; background: rgba(255,255,255,.82); padding:14px; box-shadow: var(--shadow2);}
+    .panel h4{margin:0 0 8px; font-size:14px; color: var(--ink2);}
+    .panel p{margin:0; color: var(--muted); font-size:13px; line-height:1.45;}
+    .price-row{display:flex; align-items:flex-end; justify-content:space-between; gap:10px; padding:12px; border-radius:18px; border:1px solid var(--line); background: rgba(246,247,251,.85); margin-top:10px;}
+    .price-row .label{color: var(--muted); font-size:12.5px; font-weight:900;}
+    .price-row .value{font-size:18px; font-weight:1000; color: var(--ink2);}
+    .hint{margin-top:10px; border-left:3px solid rgba(255,176,32,.90); padding:10px 12px; background: rgba(255,176,32,.12); border-radius:16px; color: var(--muted); font-size:12.5px;}
+    .bottom{
+      position:fixed; left:0; right:0; bottom:0;
+      padding:10px var(--pad) calc(env(safe-area-inset-bottom) + 10px);
+      background: rgba(246,247,251,.86);
+      backdrop-filter: blur(14px);
+      border-top:1px solid var(--line);
+      z-index:60;
+    }
+    .bottom-inner{max-width:var(--max); margin:0 auto; display:flex; gap:10px;}
+    .bottom .btn{flex:1}
+
+    @media (max-width: 1040px){ .bubble-grid{grid-template-columns: repeat(3, minmax(0, 1fr));} }
+    @media (max-width: 840px){ .bubble-grid{grid-template-columns: repeat(2, minmax(0, 1fr));} }
+    @media (max-width: 420px){ .wrap{padding-left:14px; padding-right:14px;} .bubble-grid{grid-template-columns: 1fr;} }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div style="min-width:0">
+          <p class="t1" id="brandName">Plumbing</p>
+          <p class="t2" id="brandTag">Peterborough • Quick fixed-price jobs</p>
+        </div>
+      </div>
+      <span class="pill secondary" title="Service area">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 21s7-4.35 7-10a7 7 0 1 0-14 0c0 5.65 7 10 7 10Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span id="areaText">Peterborough</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="view active" id="v_home">
+      <section class="hero">
+        <div class="hero-inner">
+          <h1 class="hero-title">Simple booking, like an app.</h1>
+          <p class="hero-sub">Tap a service bubble → pick the right option → see the correct pricing page. (We’ll add payments + diary links next.)</p>
+          <div class="hero-actions">
+            <a class="btn mint" id="waBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn primary" id="bookBtn" href="#" target="_blank" rel="noopener">Book (later)</a>
+            <button class="btn ghost" id="installBtn" type="button">Add to Home Screen</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-h">
+          <div>
+            <h2>Services</h2>
+            <p>Big bubbles. Tap to choose.</p>
+          </div>
+          <span class="pill secondary">Fast • Fixed • Local</span>
+        </div>
+
+        <div class="bubble-grid" id="homeGrid"></div>
+
+        <div class="divider"></div>
+        <p class="mini">This version matches your exact flow: clean bubbles, guided options, then pricing pages. Prices are placeholders for now.</p>
+      </section>
+    </div>
+
+    <div class="view" id="v_picker">
+      <div class="crumbs" id="crumbs"></div>
+      <section class="section">
+        <div class="section-h">
+          <div>
+            <h2 id="pickerTitle">Choose an option</h2>
+            <p id="pickerSub">Tap the closest match.</p>
+          </div>
+          <button class="back" id="backBtn" type="button">Back</button>
+        </div>
+        <div class="bubble-grid" id="pickerGrid"></div>
+        <div class="divider"></div>
+        <p class="mini">Pick the option that best matches what you see. If unsure, WhatsApp a photo and we’ll confirm.</p>
+      </section>
+    </div>
+
+    <div class="view" id="v_price">
+      <div class="crumbs" id="priceCrumbs"></div>
+      <section class="section">
+        <div class="section-h">
+          <div>
+            <h2 id="priceTitle">Pricing</h2>
+            <p id="priceSub">We’ll set the exact prices next.</p>
+          </div>
+          <button class="back" id="priceBackBtn" type="button">Back</button>
+        </div>
+
+        <div class="panel">
+          <h4 id="priceH">Service</h4>
+          <p id="priceDesc">Description</p>
+
+          <div class="price-row">
+            <div class="label">Price</div>
+            <div class="value" id="priceValue">£___</div>
+          </div>
+
+          <div class="price-row">
+            <div class="label">Deposit (optional)</div>
+            <div class="value" id="depositValue">£___</div>
+          </div>
+
+          <div class="hint">Payments + live diary are coming next. For now, these buttons can open WhatsApp and a booking link later.</div>
+
+          <div class="hero-actions" style="margin-top:12px;">
+            <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">Pay (later)</a>
+            <a class="btn mint" id="priceWaBtn" href="#" target="_blank" rel="noopener">WhatsApp this</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="section" style="margin-top:14px;">
+      <div class="section-h">
+        <div>
+          <h2>Contact</h2>
+          <p>Fastest response is WhatsApp.</p>
+        </div>
+        <span class="pill secondary" id="yearPill"></span>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="pill" id="callBtn" href="#">Call</a>
+        <a class="pill secondary" href="#" id="privacyBtn">Privacy</a>
+      </div>
+      <div class="mini" id="privacy" style="display:none; margin-top:12px;">
+        <b>Privacy:</b> We only use your details to respond to your enquiry and manage bookings. We don’t sell your data.
+      </div>
+    </section>
+  </div>
+
+  <div class="bottom">
+    <div class="bottom-inner">
+      <button class="btn" type="button" id="navHome">Home</button>
+      <a class="btn primary" id="navBook" href="#" target="_blank" rel="noopener">Book</a>
+      <a class="btn mint" id="navWA" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG = {
+      businessName: "Same-Day Plumbing",
+      tagline: "Peterborough • Fast fixed-price jobs",
+      serviceArea: "Peterborough",
+      whatsappNumber: "44YOURNUMBER",
+      bookingLink: "YOUR_BOOKING_LINK",
+      paymentLink: "YOUR_PAYMENT_LINK"
+    };
+
+    const ICONS = {
+      bathroomTap: `<svg viewBox="0 0 24 24" fill="none"><path d="M7 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 7V4h6v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 7v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 13h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 13v4a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3v-4" stroke="currentColor" stroke-width="2"/></svg>`,
+      kitchenTap: `<svg viewBox="0 0 24 24" fill="none"><path d="M8 6h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 6v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 9H9a4 4 0 0 0-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 13v2a4 4 0 0 1-4 4H9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18 13h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      toilet: `<svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10v6H7V4Z" stroke="currentColor" stroke-width="2"/><path d="M7 10h10v3a7 7 0 0 1-7 7H9a2 2 0 0 1-2-2v-8Z" stroke="currentColor" stroke-width="2"/><path d="M8 6h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      drainage: `<svg viewBox="0 0 24 24" fill="none"><path d="M5 8h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 8v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 8v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 14h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 12c2 1 2 3 0 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      radiator: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 4v16M10 4v16M14 4v16M18 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      bath: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 12v2a5 5 0 0 0 5 5h4a5 5 0 0 0 5-5v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 19l-1 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 19l1 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 10V8a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      basin: `<svg viewBox="0 0 24 24" fill="none"><path d="M7 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 7v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 11h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 11v4a4 4 0 0 0 4 4h2a4 4 0 0 0 4-4v-4" stroke="currentColor" stroke-width="2"/></svg>`,
+      indoor: `<svg viewBox="0 0 24 24" fill="none"><path d="M4 10l8-6 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v10h12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      outdoor: `<svg viewBox="0 0 24 24" fill="none"><path d="M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 18v-6a6 6 0 0 1 12 0v6" stroke="currentColor" stroke-width="2"/><path d="M8 9c1-2 2-3 4-3s3 1 4 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      question: `<svg viewBox="0 0 24 24" fill="none"><path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-.9.9-1.8 1.2-1.8 2.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="2"/></svg>`,
+      heatTop: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 4v16M10 4v16M14 4v16M18 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      heatBottom: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 4v16M10 4v16M14 4v16M18 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      lukewarm: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 4v16M10 4v16M14 4v16M18 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 9c1 1 1 3 0 4M12 9c1 1 1 3 0 4M16 9c1 1 1 3 0 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      notHeating: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 4v16M10 4v16M14 4v16M18 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 7l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`
+    };
+
+    // Flow data (your exact menu structure)
+    const FLOW = {
+      home: { type:"menu", title:"Services", sub:"Tap a bubble to start.", options:[
+        { title:"Bathroom tap replacement", desc:"Choose basin or bath taps.", icon:"bathroomTap", next:"bathroom_menu" },
+        { title:"Kitchen tap replacement", desc:"Goes straight to pricing.", icon:"kitchenTap", next:"kitchen_price" },
+        { title:"Toilet fix", desc:"Quick questions to narrow it down.", icon:"toilet", next:"toilet_menu" },
+        { title:"Drainage", desc:"Indoor or outdoor.", icon:"drainage", next:"drainage_menu" },
+        { title:"Radiators (not heating)", desc:"Choose what it’s doing.", icon:"radiator", next:"rads_menu" },
+      ]},
+
+      bathroom_menu: { type:"menu", title:"Bathroom taps", sub:"Pick the closest match.", options:[
+        { title:"Basin tap replacement", desc:"Bathroom basin / sink tap.", icon:"basin", next:"basin_price" },
+        { title:"Bath taps replacement", desc:"Bath mixer or separate taps.", icon:"bath", next:"bath_price" },
+      ]},
+
+      toilet_menu: { type:"menu", title:"Toilet fix", sub:"What’s the issue?", options:[
+        { title:"Toilet keeps running", desc:"Water keeps flowing after flush.", icon:"toilet", next:"toilet_running_price" },
+        { title:"Toilet not filling", desc:"Cistern fills slowly / not at all.", icon:"toilet", next:"toilet_notfill_price" },
+        { title:"Weak / incomplete flush", desc:"Struggles to clear; poor flush.", icon:"toilet", next:"toilet_weakflush_price" },
+        { title:"Leak around toilet", desc:"Damp/visible leak around base/pipe.", icon:"question", next:"toilet_leak_price" },
+        { title:"Not sure (send a photo)", desc:"We’ll diagnose from photo/video.", icon:"question", next:"toilet_diag_price" },
+      ]},
+
+      drainage_menu: { type:"menu", title:"Drainage", sub:"Where is the issue?", options:[
+        { title:"Indoor drainage", desc:"Sinks, baths, showers, internal waste.", icon:"indoor", next:"drain_indoor_menu" },
+        { title:"Outdoor drainage", desc:"Gullies, external drains, outside smells.", icon:"outdoor", next:"drain_outdoor_menu" },
+      ]},
+      drain_indoor_menu: { type:"menu", title:"Indoor drainage", sub:"Pick the closest match.", options:[
+        { title:"Slow draining", desc:"Water drains slowly.", icon:"drainage", next:"drain_indoor_slow_price" },
+        { title:"Fully blocked", desc:"Not draining at all.", icon:"drainage", next:"drain_indoor_blocked_price" },
+        { title:"Bad smell", desc:"Odour from plughole.", icon:"question", next:"drain_indoor_smell_price" },
+      ]},
+      drain_outdoor_menu: { type:"menu", title:"Outdoor drainage", sub:"Pick the closest match.", options:[
+        { title:"Blocked gully", desc:"Overflowing gully outside.", icon:"outdoor", next:"drain_outdoor_gully_price" },
+        { title:"Outdoor smell / overflow", desc:"Bad smell or overflow outside.", icon:"outdoor", next:"drain_outdoor_smell_price" },
+      ]},
+
+      rads_menu: { type:"menu", title:"Radiators", sub:"What’s happening?", options:[
+        { title:"Rads not heating up", desc:"Cold even when heating is on.", icon:"notHeating", next:"rads_not_price" },
+        { title:"Hot at top, cold at bottom", desc:"Often sludge / flow issue.", icon:"heatTop", next:"rads_tophot_price" },
+        { title:"Hot at bottom, cold at top", desc:"Less common; needs checking.", icon:"heatBottom", next:"rads_bottomhot_price" },
+        { title:"Lukewarm radiator", desc:"Warm but not properly hot.", icon:"lukewarm", next:"rads_lukewarm_price" },
+      ]},
+
+      // Pricing placeholders
+      kitchen_price: { type:"price", title:"Kitchen tap replacement", desc:"Like-for-like swap. (Set prices next.)", price:"£___", deposit:"£___" },
+      basin_price:   { type:"price", title:"Basin tap replacement", desc:"Bathroom basin tap replacement.", price:"£___", deposit:"£___" },
+      bath_price:    { type:"price", title:"Bath taps replacement", desc:"Bath mixer or separate taps replacement.", price:"£___", deposit:"£___" },
+
+      toilet_running_price:   { type:"price", title:"Toilet keeps running", desc:"Likely flush valve / seal.", price:"£___", deposit:"£___" },
+      toilet_notfill_price:   { type:"price", title:"Toilet not filling", desc:"Likely fill valve or supply issue.", price:"£___", deposit:"£___" },
+      toilet_weakflush_price: { type:"price", title:"Weak / incomplete flush", desc:"Diagnosis + fix depending on mechanism.", price:"£___", deposit:"£___" },
+      toilet_leak_price:      { type:"price", title:"Leak around toilet", desc:"Check base/seal/pipework and agree before work.", price:"£___", deposit:"£___" },
+      toilet_diag_price:      { type:"price", title:"Toilet diagnosis (photo/video)", desc:"Send a photo/video and we’ll confirm.", price:"£___", deposit:"£___" },
+
+      drain_indoor_slow_price:    { type:"price", title:"Indoor drainage • slow", desc:"Restore flow.", price:"£___", deposit:"£___" },
+      drain_indoor_blocked_price: { type:"price", title:"Indoor drainage • blocked", desc:"Unblock internal waste.", price:"£___", deposit:"£___" },
+      drain_indoor_smell_price:   { type:"price", title:"Indoor drainage • smell", desc:"Trap/waste check + advice.", price:"£___", deposit:"£___" },
+
+      drain_outdoor_gully_price:  { type:"price", title:"Outdoor drainage • blocked gully", desc:"Clear gully.", price:"£___", deposit:"£___" },
+      drain_outdoor_smell_price:  { type:"price", title:"Outdoor drainage • smell/overflow", desc:"Inspection + clear if accessible.", price:"£___", deposit:"£___" },
+
+      rads_not_price:       { type:"price", title:"Rads not heating up", desc:"Bleed/check valves/system basics.", price:"£___", deposit:"£___" },
+      rads_tophot_price:    { type:"price", title:"Hot top, cold bottom", desc:"Often sludge/flow issue.", price:"£___", deposit:"£___" },
+      rads_bottomhot_price: { type:"price", title:"Hot bottom, cold top", desc:"Needs checks.", price:"£___", deposit:"£___" },
+      rads_lukewarm_price:  { type:"price", title:"Lukewarm radiator", desc:"Balance/valves/flow checks.", price:"£___", deposit:"£___" },
+    };
+
+    const $ = (id)=>document.getElementById(id);
+    const views = {home:$("v_home"), picker:$("v_picker"), price:$("v_price")};
+    const homeGrid = $("homeGrid");
+    const pickerGrid = $("pickerGrid");
+
+    function showView(name){
+      Object.values(views).forEach(v=>v.classList.remove("active"));
+      views[name].classList.add("active");
+      window.scrollTo({top:0, behavior:"instant"});
+    }
+    $("brandName").textContent = CONFIG.businessName;
+    $("brandTag").textContent = CONFIG.tagline;
+    $("areaText").textContent = CONFIG.serviceArea;
+    $("yearPill").textContent = "© " + new Date().getFullYear();
+
+    const waBase = `https://wa.me/${CONFIG.whatsappNumber}?text=`;
+    const waHome = waBase + encodeURIComponent("Hi, I'd like a quote. My postcode is ___ and the issue is ___");
+    $("waBtn").href = waHome;
+    $("navWA").href = waHome;
+    $("callBtn").href = `tel:+${CONFIG.whatsappNumber}`;
+
+    const bookingLink = CONFIG.bookingLink || "#";
+    $("bookBtn").href = bookingLink;
+    $("navBook").href = bookingLink;
+    $("payBtn").href = CONFIG.paymentLink || "#";
+
+    $("privacyBtn").addEventListener("click", (e)=>{
+      e.preventDefault();
+      $("privacy").style.display = $("privacy").style.display==="none" ? "block" : "none";
+    });
+
+    // iPhone add to home screen helper
+    let deferredPrompt=null;
+    const installBtn=$("installBtn");
+    installBtn.style.display="none";
+    window.addEventListener("beforeinstallprompt",(e)=>{
+      e.preventDefault(); deferredPrompt=e; installBtn.style.display="inline-flex";
+    });
+    installBtn.addEventListener("click", async ()=>{
+      if(!deferredPrompt){ alert("On iPhone: tap Share → Add to Home Screen."); return; }
+      deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display="none";
+    });
+
+    const stack=["home"];
+    function setCrumbs(el, labels){
+      el.innerHTML="";
+      labels.forEach((t, idx)=>{
+        const c=document.createElement("span");
+        c.className="crumb";
+        c.innerHTML = idx===labels.length-1 ? `<strong>${t}</strong>` : t;
+        el.appendChild(c);
+      });
+    }
+
+    function bubbleItem(opt){
+      const card=document.createElement("div");
+      card.className="bubble-card";
+      card.setAttribute("role","button");
+      card.setAttribute("tabindex","0");
+      const iconSvg = ICONS[opt.icon] || ICONS.question;
+      card.innerHTML = `
+        <div class="row">
+          <div class="circle" aria-hidden="true">${iconSvg}</div>
+          <div style="min-width:0">
+            <h3>${opt.title}</h3>
+            <p class="desc">${opt.desc || ""}</p>
+          </div>
+        </div>
+        <span class="chip"><span class="dot"></span><b>Tap</b> to continue</span>
+      `;
+      const go=()=>navigateTo(opt.next, opt.title);
+      card.addEventListener("click", go);
+      card.addEventListener("keydown",(ev)=>{ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); go(); }});
+      return card;
+    }
+
+    FLOW.home.options.forEach(opt=>homeGrid.appendChild(bubbleItem(opt)));
+
+    function renderPicker(nodeKey){
+      const node=FLOW[nodeKey];
+      $("pickerTitle").textContent=node.title;
+      $("pickerSub").textContent=node.sub || "Choose an option";
+      pickerGrid.innerHTML="";
+      node.options.forEach(opt=>pickerGrid.appendChild(bubbleItem(opt)));
+      setCrumbs($("crumbs"), ["Home", node.title]);
+      showView("picker");
+    }
+
+    function renderPrice(nodeKey, fromTitle){
+      const node=FLOW[nodeKey];
+      $("priceH").textContent=node.title;
+      $("priceDesc").textContent=node.desc || "";
+      $("priceValue").textContent=node.price || "£___";
+      $("depositValue").textContent=node.deposit || "£___";
+      $("priceWaBtn").href = waBase + encodeURIComponent(`Hi, I want: ${node.title}. My postcode is ___ .`);
+      setCrumbs($("priceCrumbs"), ["Home", fromTitle || "Service", "Pricing"]);
+      showView("price");
+    }
+
+    function navigateTo(nodeKey, fromTitle){
+      const node=FLOW[nodeKey];
+      stack.push(nodeKey);
+      if(node.type==="menu") renderPicker(nodeKey);
+      else renderPrice(nodeKey, fromTitle);
+      history.pushState({k:nodeKey}, "", "#"+nodeKey);
+    }
+
+    function goBack(){
+      if(stack.length<=1){ showView("home"); history.pushState({k:"home"}, "", "#home"); return; }
+      stack.pop();
+      const prev=stack[stack.length-1];
+      if(prev==="home"){ showView("home"); return; }
+      const node=FLOW[prev];
+      if(node.type==="menu") renderPicker(prev);
+      else renderPrice(prev, "Service");
+    }
+
+    $("backBtn").addEventListener("click", goBack);
+    $("priceBackBtn").addEventListener("click", goBack);
+    $("navHome").addEventListener("click", ()=>{ stack.length=1; showView("home"); history.pushState({k:"home"}, "", "#home"); });
+
+    window.addEventListener("popstate", ()=>{
+      const h=(location.hash||"#home").replace("#","");
+      if(!h || h==="home"){ stack.length=1; showView("home"); return; }
+      if(FLOW[h]){
+        stack.length=1; stack.push(h);
+        const node=FLOW[h];
+        if(node.type==="menu") renderPicker(h);
+        else renderPrice(h, "Service");
+      }
+    });
+
+    (function initialRoute(){
+      const h=(location.hash||"#home").replace("#","");
+      if(h && h!=="home" && FLOW[h]){
+        stack.push(h);
+        const node=FLOW[h];
+        if(node.type==="menu") renderPicker(h);
+        else renderPrice(h, "Service");
+      }
+    })();
+
+    if("serviceWorker" in navigator){
+      navigator.serviceWorker.register("sw.js").catch(()=>{});
+    }
+  </script>
+</body>
+</html>
